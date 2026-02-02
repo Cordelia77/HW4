@@ -33,6 +33,7 @@ I used singletons for `GameManager.cs`, `ScoreUI.cs`, and `AudioManager.cs` to m
 - For `GameManager.cs`, I added a static `Instance` variable (`public static GameManager Instance`) and checked in `Awake()` if an instance already exists—if yes, I destroy the new one, if no, I set `Instance = this`. This lets the Player or Pipe scripts call `GameManager.Instance.AddScore()` to update the score without hunting for the right GameManager object in the scene.
 - I did the same for `ScoreUI.cs` and `AudioManager.cs`. This way, the Controller can trigger events knowing the View systems are there and unique, but still doesn’t need to reference them directly.<br><br>
 
+
 ## 3. How This Keeps Code Clean
 The biggest win here is decoupling:
 - The Controller layer (player/pipe/GameManager code) doesn’t know or care how the score is displayed or what sound plays when you jump. It just sends events and focuses on gameplay.
