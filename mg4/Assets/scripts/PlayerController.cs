@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float jumpForce = 5.5f;
+    public float jumpForce = 5f;
+    public float minY = -4f;
     private Rigidbody2D rb;
-    private float minY = -3.3f;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !GameManager.Instance.IsGameOver)
         {
             rb.velocity = new Vector2(0, jumpForce);
-            if (AudioManager.Instance != null) AudioManager.Instance.OnFlapSound();
+            GameEvents.TriggerPlayerFlap();
         }
 
         if (transform.position.y < minY)
@@ -26,14 +26,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("Pipe"))
+        if (GameManager.Instance.IsGameOver) return;
+
+        if (other.gameObject.CompareTag("Pipe"))
         {
-            if (GameManager.Instance != null && !GameManager.Instance.IsGameOver)
-            {
-                GameManager.Instance.GameOver();
-            }
+            GameManager.Instance.GameOver();
         }
     }
 }

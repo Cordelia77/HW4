@@ -17,15 +17,24 @@ public class ScoreUI : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        GameEvents.OnScoreChanged += UpdateScore;
+        GameEvents.OnGameOver += ShowGameOver;
     }
 
-    public void UpdateScore()
+    public void UpdateScore(int newScore)
     {
-
+        if (scoreDisplay != null)
+            scoreDisplay.text = newScore.ToString();
     }
 
     public void ShowGameOver()
     {
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.OnScoreChanged -= UpdateScore;
+        GameEvents.OnGameOver -= ShowGameOver;
     }
 }

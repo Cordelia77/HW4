@@ -13,6 +13,9 @@ public class AudioManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         audioSource = GetComponent<AudioSource>();
+        GameEvents.OnScoreChanged += OnScoreIncreased;
+        GameEvents.OnGameOver += OnGameOverPlayHit;
+        GameEvents.OnPlayerFlap += OnFlapSound;
     }
 
     public void OnFlapSound()
@@ -21,7 +24,7 @@ public class AudioManager : MonoBehaviour
             audioSource.PlayOneShot(flapClip);
     }
 
-    public void OnScoreIncreased()
+    public void OnScoreIncreased(int newScore)
     {
         if (audioSource != null && scoreClip != null)
             audioSource.PlayOneShot(scoreClip);
@@ -31,5 +34,12 @@ public class AudioManager : MonoBehaviour
     {
         if (audioSource != null && gameOverClip != null)
             audioSource.PlayOneShot(gameOverClip);
+    }
+
+    void OnDestroy()
+    {
+        GameEvents.OnScoreChanged -= OnScoreIncreased;
+        GameEvents.OnGameOver -= OnGameOverPlayHit;
+        GameEvents.OnPlayerFlap -= OnFlapSound;
     }
 }

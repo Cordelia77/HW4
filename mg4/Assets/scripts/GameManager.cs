@@ -33,8 +33,7 @@ public class GameManager : MonoBehaviour
         IsGameOver = true;
         gameOverText.gameObject.SetActive(true);
         gameOverText.enabled = true;
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.OnGameOverPlayHit();
+        GameEvents.TriggerGameOver();
     }
 
     public void AddScore()
@@ -43,8 +42,7 @@ public class GameManager : MonoBehaviour
         {
             score++;
             UpdateScoreUI();
-            if (AudioManager.Instance != null) AudioManager.Instance.OnScoreIncreased();
-            if (ScoreUI.Instance != null) ScoreUI.Instance.UpdateScore();
+            GameEvents.TriggerScoreChanged(score);
         }
     }
 
